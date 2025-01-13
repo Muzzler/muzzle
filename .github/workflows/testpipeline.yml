@@ -1,1 +1,33 @@
-123
+name: MyTestWorkflow
+env:
+  APP_NAME: "My test APP"
+  APP_ENV: "Demo"
+  
+on: 
+  push:
+    branches:
+    - main
+
+jobs:
+  my-1st:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: clone
+      uses: actions/checkout@v1
+
+    - name: Jobe ls
+      run: ls -la 
+
+    - name: cat envs
+      run: |
+        echo "${{ env.APP_NAME }}"
+        echo "${{ env.APP_ENV }}"
+      
+#  my-2nd:
+#    runs-on: ubuntu-latest
+#    needs: [my-1st]
+
+#    steps:
+#    - name: 2nd Jobe
+#      run: echo "Starting 2nd job" && df -h
