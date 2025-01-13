@@ -30,12 +30,12 @@ jobs:
 
 #    - name: build docker
 #      run: docker build -t muzzle/muzzle:v1.00 .
-    - name: Get next version
-      uses: reecetech/version-increment@2024.10.1
-      id: version
-      with:
-        scheme: semver
-        increment: patch
+#    - name: Get next version
+#      uses: reecetech/version-increment@2024.10.1
+#      id: version
+#      with:
+#        scheme: semver
+#        increment: patch
 
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v4 
@@ -55,8 +55,8 @@ jobs:
         REPOSITORY: ${{ env.REPOSITORY }}
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        docker build -t ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ steps.version.outputs.version }} .
-        docker push ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ steps.version.outputs.version }}
+        docker build -t ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:1.0.${{ github.run_number }} .
+        docker push ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:1.0.${{ github.run_number}}
 
 #        docker push ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:$IMAGE_TAG
 
