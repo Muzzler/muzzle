@@ -57,6 +57,7 @@ jobs:
       run: |
         docker build -t ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ steps.version.outputs.version }} .
         docker push ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ steps.version.outputs.version }}
+
 #        docker push ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:$IMAGE_TAG
 
 
