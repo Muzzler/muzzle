@@ -11,5 +11,5 @@ jobs:
 
     steps:
     - name: 1st Jobe
-      run: echo "Starting 1st job"
+      run: echo "Starting 1st job" && cat /etc/os-release
       
