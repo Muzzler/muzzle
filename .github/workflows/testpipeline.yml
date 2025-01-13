@@ -29,6 +29,12 @@ jobs:
 
     - name: show images
       run: docker images      
+
+    - name: Login to DockerHub Registry
+      run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+
+    - name: docker push
+      run: docker push muzzle/muzzle:v1.00
     
 #  my-2nd:
 #    runs-on: ubuntu-latest
