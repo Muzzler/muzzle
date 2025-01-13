@@ -1,1 +1,15 @@
-123
+name: MyTestWorkflow
+
+on: 
+  push:
+    branches:
+    - main
+
+jobs:
+  my-1st:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 1st Jobe
+      run: echo "Starting 1st job"
+      
