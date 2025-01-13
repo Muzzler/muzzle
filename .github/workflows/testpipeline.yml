@@ -30,6 +30,7 @@ jobs:
 #    - name: build docker
 #      run: docker build -t muzzle/muzzle:v1.00 .
 
+
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v4 
       with:
