@@ -55,8 +55,8 @@ jobs:
         REPOSITORY: ${{ env.REPOSITORY }}
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        docker build -t ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:1.0.${{ github.run_number }} .
-        docker push ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:1.0.${{ github.run_number}}
+        docker build -t ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ APP_ENV }}1.0.${{ github.run_number }} .
+#        docker push ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:1.0.${{ github.run_number}}
 
 #        docker push ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:$IMAGE_TAG
 
