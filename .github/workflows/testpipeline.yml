@@ -38,7 +38,7 @@ jobs:
       id: bump_version
       uses: christian-draeger/increment-semantic-version@1.0.3
       with:
-        current-version: '1.0.3'
+#        current-version: '1.0.3'
         version-fragment: 'bug'
     - name: Do something with your bumped release version
       run: echo ${{ steps.bump_version.outputs.next-version }}
@@ -52,7 +52,7 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 #        role-to-assume: arn:aws:iam::123456789012:role/my-github-actions-role
         aws-region: eu-central-1
-        
+
 
     - name: Login to Amazon ECR
       id: login-ecr
