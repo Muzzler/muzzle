@@ -34,7 +34,7 @@ jobs:
         scheme: semver
         increment: patch
 
-        
+
 #    - name: build docker
 #      run: docker build -t muzzle/muzzle:v1.00 .
 
@@ -56,7 +56,7 @@ jobs:
         REPOSITORY: ${{ env.REPOSITORY }}
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        docker build -t ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ env.APP_ENV }}-${{ steps.version.outputs.version }} .
+        docker build -t ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ env.APP_ENV }}-${{ steps.version.outputs.v-version }} .
 #        docker push ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ env.APP_ENV }}1.0.${{ github.run_number}}
 
 #        docker push ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:$IMAGE_TAG
