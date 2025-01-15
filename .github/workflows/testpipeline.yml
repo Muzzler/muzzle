@@ -27,21 +27,16 @@ jobs:
         echo "${{ env.APP_NAME }}"
         echo "${{ env.APP_ENV }}"
 
-#    - name: Get next version
-#      uses: reecetech/version-increment@2024.10.1
-#      id: version
-#      with:
-#        scheme: semver
-#        increment: patch
-
-    - name: Bump release version
-      id: bump_version
-      uses: christian-draeger/increment-semantic-version@1.0.3
+    - name: Get next version
+      uses: reecetech/version-increment@2024.10.1
+      id: version
       with:
-#        current-version: '1.0.3'
-        version-fragment: 'bug'
+        scheme: semver
+        increment: patch
+        release_branch: publish
+
     - name: Do something with your bumped release version
-      run: echo ${{ steps.bump_version.outputs.next-version }}
+      run: echo ${{ steps.version.outputs.v-version }}
 #    - name: build docker
 #      run: docker build -t muzzle/muzzle:v1.00 .
 
