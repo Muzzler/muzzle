@@ -34,6 +34,7 @@ jobs:
         scheme: semver
         increment: patch
 
+        
 #    - name: build docker
 #      run: docker build -t muzzle/muzzle:v1.00 .
 
