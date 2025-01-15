@@ -27,14 +27,21 @@ jobs:
         echo "${{ env.APP_NAME }}"
         echo "${{ env.APP_ENV }}"
 
-    - name: Get next version
-      uses: reecetech/version-increment@2024.10.1
-      id: version
+#    - name: Get next version
+#      uses: reecetech/version-increment@2024.10.1
+#      id: version
+#      with:
+#        scheme: semver
+#        increment: patch
+
+    - name: Bump release version
+      id: bump_version
+      uses: christian-draeger/increment-semantic-version@1.0.3
       with:
-        scheme: semver
-        increment: patch
-
-
+        current-version: '1.0.3'
+        version-fragment: 'feature'
+    - name: Do something with your bumped release version
+      run: echo ${{ steps.bump_version.outputs.next-version }}
 #    - name: build docker
 #      run: docker build -t muzzle/muzzle:v1.00 .
 
@@ -50,13 +57,13 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v2
 
-    - name: Build, tag, and push docker image to Amazon ECR
-      env:
-        REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        REPOSITORY: ${{ env.REPOSITORY }}
-        IMAGE_TAG: ${{ github.sha }}
-      run: |
-        docker build -t ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ env.APP_ENV }}-${{ steps.version.outputs.v-version }} .
+#    - name: Build, tag, and push docker image to Amazon ECR
+#      env:
+#        REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+#        REPOSITORY: ${{ env.REPOSITORY }}
+#        IMAGE_TAG: ${{ github.sha }}
+#      run: |
+#        docker build -t ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ env.APP_ENV }}-${{ steps.version.outputs.v-version }} .
 #        docker push ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ env.APP_ENV }}1.0.${{ github.run_number}}
 
 #        docker push ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:$IMAGE_TAG
