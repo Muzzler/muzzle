@@ -6,26 +6,63 @@ env:
   REPOSITORY: "muzzle/muzzle"
 #  IMAGE_TAG:
 
-on: 
-  push:
-    branches:
-    - main
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch name to check (default: develop)'
+        required: false
+        default: 'develop'
+      custom_tag:
+        description: 'Custom docker tag (optional, replaces 1.0.{run_number})'
+        required: false
 
 jobs:
-  my-1st:
+  check-branches:
     runs-on: ubuntu-latest
-
+    outputs:
+#      admin_branch: ${{ steps.check_admin.outputs.actual_branch }}
+#      client_branch: ${{ steps.check_client.outputs.actual_branch }}
+#      portal_branch: ${{ steps.check_portal.outputs.actual_branch }}
+      image_tag: ${{ steps.set_tag.outputs.image_tag }}
     steps:
-    - name: clone
-      uses: actions/checkout@v3
+      - name: Set image tag
+        id: set_tag
+        run: |
+          if [ -z "${{ github.event.inputs.custom_tag }}" ]; then
+            echo "1st step"
+            echo "image_tag=1.0.${{ github.run_number }}" >> $GITHUB_OUTPUT
+          else
+            echo "2nd step"
+            echo "image_tag=${{ github.event.inputs.custom_tag }}" >> $GITHUB_OUTPUT
+          fi
 
-    - name: Jobe ls
-      run: ls -la 
+  build-images:
+    needs: check-branches
+    runs-on: ubuntu-latest
+    env:
+      REACT_APP_GOOGLE_API_KEY: ${{ secrets.REACT_APP_GOOGLE_API_KEY_STAGE }}
+    steps:
+      - name: Build and push image
+        env:
+          IMAGE_TAG: ${{ needs.check-branches.outputs.image_tag }}
+        run: |
+          echo $IMAGE_TAG
 
-    - name: cat envs
-      run: |
-        echo "${{ env.APP_NAME }}"
-        echo "${{ env.APP_ENV }}"
+#  my-1st:
+#    runs-on: ubuntu-latest
+
+#    steps:
+#    - name: clone
+#      uses: actions/checkout@v3
+
+#    - name: Jobe ls
+#      run: ls -la 
+
+#    - name: cat envs
+#      run: |
+#        echo "${{ env.APP_NAME }}"
+#        echo "${{ env.APP_ENV }}"
 
 
 #    - name: build docker
@@ -37,17 +74,17 @@ jobs:
 #        scheme: semver
 #        increment: patch
 
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v4 
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#    - name: Configure AWS credentials
+#      uses: aws-actions/configure-aws-credentials@v4 
+#      with:
+#        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 #        role-to-assume: arn:aws:iam::123456789012:role/my-github-actions-role
-        aws-region: eu-central-1
+#        aws-region: eu-central-1
 
-    - name: Login to Amazon ECR
-      id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v2
+#    - name: Login to Amazon ECR
+#      id: login-ecr
+#      uses: aws-actions/amazon-ecr-login@v2
 
 #    - name: Build, tag, and push docker image to Amazon ECR
 #      env:
@@ -61,8 +98,8 @@ jobs:
 #        docker push ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:$IMAGE_TAG
 
 
-    - name: show images
-      run: docker images      
+#    - name: show images
+#      run: docker images      
 
 
 #    - name: Login to DockerHub Registry
