@@ -1,0 +1,21 @@
+name: Call Main
+on: 
+  workflow_dispatch:
+    inputs:
+      env:
+        description: 'Branch name to check (default: develop)'
+        required: false
+        type: choise
+        default: 'dev'
+        options:
+          - dev
+          - qa
+          - stage
+          - prod
+jobs:
+  call:
+    uses: ./.github/workflows/testpipeline.yml@main
+    with:
+      ref: ${{ github.ref_name }}
+      env: ${{ github.event.inputs.env }}
+      
