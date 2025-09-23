@@ -9,6 +9,14 @@ env:
 on:
   workflow_dispatch:
     inputs:
+      ref:
+        description: 'Branch name to check (default: develop)'
+        required: true
+        type: string
+      env:
+        description: 'ENV'
+        required: true
+        type: string
       branch:
         description: 'Branch name to check (default: develop)'
         required: false
@@ -26,6 +34,13 @@ jobs:
 #      portal_branch: ${{ steps.check_portal.outputs.actual_branch }}
       image_tag: ${{ steps.set_tag.outputs.image_tag }}
     steps:
+      - name: check vars
+      - run: |
+          echo {{ github.event.inputs.ref }}
+          echo {{ github.event.inputs.env }}
+          echo {{ github.event.inputs.branch }}
+          echo {{ github.event.inputs.custom_tag }}
+          
       - name: Set image tag
         id: set_tag
         run: |
