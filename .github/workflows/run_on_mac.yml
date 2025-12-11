@@ -28,12 +28,8 @@ jobs:
     - name: Show system info
       run: |
         echo "💻 CPU Info:"
-        sysctl -n machdep.cpu.brand_string  # Для macOS
-        # Для Linux используйте: lscpu | grep "Model name"
         
         echo "🧠 Memory:"
-        system_profiler SPHardwareDataType | grep "Memory"  # macOS
-        # Для Linux: free -h
         
     - name: Create custom file
       run: |
