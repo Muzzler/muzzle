@@ -1,0 +1,47 @@
+name: Test My Custom Runner
+
+on:
+  workflow_dispatch:  # Ручной запуск
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-runner:
+    runs-on: self-hosted  # Используем self-hosted runner
+    
+    steps:
+    - name: Check if running on my machine
+      run: |
+        echo "🎯 Running on MY machine!"
+        echo "Hostname: $(hostname)"
+        echo "User: $(whoami)"
+        echo "OS: $(uname -a)"
+        echo "Current directory: $(pwd)"
+        
+    - name: List directory contents
+      run: |
+        echo "📁 Contents of current directory:"
+        ls -la
+        
+    - name: Show system info
+      run: |
+        echo "💻 CPU Info:"
+        sysctl -n machdep.cpu.brand_string  # Для macOS
+        # Для Linux используйте: lscpu | grep "Model name"
+        
+        echo "🧠 Memory:"
+        system_profiler SPHardwareDataType | grep "Memory"  # macOS
+        # Для Linux: free -h
+        
+    - name: Create custom file
+      run: |
+        echo "This file was created on MY machine at $(date)" > my-machine-proof.txt
+        echo "Machine ID: $(hostname)-$(whoami)-$(date +%s)" >> my-machine-proof.txt
+        
+    - name: Upload proof artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: my-machine-proof
+        path: my-machine-proof.txt
