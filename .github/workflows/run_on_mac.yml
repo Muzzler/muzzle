@@ -1,4 +1,4 @@
-name: Test My Custom Runner
+name: MacOs Runner
 
 on:
   workflow_dispatch:  # Ручной запуск
@@ -28,8 +28,9 @@ jobs:
     - name: Show system info
       run: |
         echo "💻 CPU Info:"
-        
+        sysctl -n machdep.cpu.brand_string
         echo "🧠 Memory:"
+        vm_stat
         
     - name: Create custom file
       run: |
